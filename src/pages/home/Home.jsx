@@ -51,8 +51,6 @@ const Home = () => {
             map.setView([res.data.lat || 51.505, res.data.lon || -0.09], 9)
         })
     }
-    console.log(filteredVacations);
-
     return (
         <div style={{ width: '100vw', height: '100vh' }}>
             <Navbar />
@@ -86,8 +84,8 @@ const Home = () => {
                                 </div>
                             ))}
                         {filteredVacations.map(vacation => (
-                            <div onClick={() => handleMapData(vacation)} key={vacation.id} className={classes.vacationWrapper} style={{ borderBottom: '1px solid lightgrey' }}>
-                                <Vacation vacation={vacation} />
+                            <div key={vacation.id} className={classes.vacationWrapper} style={{ borderBottom: '1px solid lightgrey' }}>
+                                <Vacation vacation={vacation} handleMapData={handleMapData}/>
                             </div>
                         ))}
                     </div>

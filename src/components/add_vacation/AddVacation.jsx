@@ -8,7 +8,9 @@ import DatePicker from '../date_picker/DatePicker';
 import { createVacation } from '../../redux/actions'
 import Tooltip from '../Tooltip';
 import ImageUpload from './ImageUpload';
+import { toast } from 'react-toastify';
 
+toast.configure()
 const AddVacation = ({ setAddVacation }) => {
     const classes = useStyles();
     const dispatch = useDispatch()
@@ -62,8 +64,9 @@ const AddVacation = ({ setAddVacation }) => {
             }).then(res => {
                 socket.emit('add_vacation', res.data)
                 dispatch(createVacation(res.data))
+                toast.success("Vacation added!")
             })
-
+            
             setAddVacation(false)
         } catch (err) {
             setIsOpenTooltip(true)
@@ -94,14 +97,14 @@ const AddVacation = ({ setAddVacation }) => {
                     <TextField label="Description" style={{ width: '100%' }} inputProps={{ maxLength: 210 }} onChange={e => setDescription(e.target.value)} />
                 </div>
                 <div>
-                    <FormControl onFocus={() => {price === 0 && setPrice('')}} onBlur={() => {price === '' && setPrice(0)}} fullWidth className={classes.price}>
+                    <FormControl onFocus={() => { price === 0 && setPrice('') }} onBlur={() => { price === '' && setPrice(0) }} fullWidth className={classes.price}>
                         <InputLabel>Price</InputLabel>
                         <Input
                             type='number'
                             value={price}
                             startAdornment={<InputAdornment position="start" style={{ margin: 0, marginRight: 8 }}>$</InputAdornment>}
                             onChange={e => e.target.value.length < 6 && setPrice(e.target.value)}
-                            
+
                         />
                     </FormControl>
                     <div className={classes.buttons}>

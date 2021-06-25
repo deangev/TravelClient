@@ -38,7 +38,6 @@ const Auth = () => {
 
     const loginSubmit = async (user) => {
         try {
-            console.log(user);
             const loginRes = await Axios.post(`${url}/users/login`, user || loginData);
             dispatch(updateUserData(loginRes.data))
             localStorage.setItem('auth-token', loginRes.data.token)

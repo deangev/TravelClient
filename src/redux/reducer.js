@@ -1,5 +1,5 @@
 const initialState = {
-    url: 'http://localhost:5000',
+    url: 'https://vacation-dean.herokuapp.com',
     userData: {
         token: undefined,
         firstName: undefined,

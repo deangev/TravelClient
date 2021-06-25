@@ -6,6 +6,7 @@ import reducer from './redux/reducer';
 import { Provider } from 'react-redux';
 import 'leaflet/dist/leaflet.css'
 import 'antd/dist/antd.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 const store = createStore(
   reducer,

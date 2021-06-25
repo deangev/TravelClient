@@ -9,7 +9,9 @@ import { editVacation, removeVacation } from '../../redux/actions';
 import DatePicker from '../date_picker/DatePicker'
 import EditImage from './EditImage';
 import Tooltip from '../Tooltip';
+import { toast } from 'react-toastify';
 
+toast.configure()
 const EditVacation = (props) => {
     const classes = useStyles();
     const { setEdit, vacation } = props
@@ -87,6 +89,7 @@ const EditVacation = (props) => {
             dispatch(editVacation(editedVacation))
             socket.emit('edit_vacation', editedVacation)
             await Axios.post(`${url}/vacations/editVacation`, editedVacation)
+            toast.success("Vacation edited!")
             setEdit(false)
             props.setEdittedTitle(destination)
 
@@ -97,16 +100,17 @@ const EditVacation = (props) => {
         }
     }
 
-    const handleDeleteVacation = async () => {
+    const handleDeleteVacation = () => {
         deleteRef.current.classList.add('animate__fadeOut')
-        socket.emit('remove_vacation', vacation.id)
-        await Axios.post(`${url}/vacations/removeVacation`, {
-            id: vacation.id
-        })
-        setTimeout(() => {
+        setTimeout(async () => {
             deleteRef.current.classList.remove('animate__fadeOut')
+            toast.success("Vacation removed!")
             dispatch(removeVacation(vacation.id))
-        }, 350)
+            socket.emit('remove_vacation', vacation.id)
+            await Axios.post(`${url}/vacations/removeVacation`, {
+                id: vacation.id
+            })
+        }, 550)
     }
 
     return (

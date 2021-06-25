@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import Axios from 'axios';
 import { CardContent, Checkbox, Divider, IconButton } from '@material-ui/core';
-import { Favorite, FavoriteBorder, Edit } from '@material-ui/icons';
+import { Favorite, FavoriteBorder, Edit, Map } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { followVacation } from '../../redux/actions';
 import EditVacation from '../edit_vacation/EditVacation';
@@ -13,7 +13,8 @@ const createMarkup = html => {
 }
 
 const Vacation = (props) => {
-    const { vacation } = props
+    const { vacation, handleMapData } = props
+    const { image, destination, id, followers, dates, description, price } = vacation
     const classes = useStyles();
     const url = useSelector(state => state.url)
     const userData = useSelector(state => state.userData)
@@ -21,23 +22,23 @@ const Vacation = (props) => {
     const searchString = useSelector(state => state.searchString)
     const dispatch = useDispatch()
 
-    const [edittedTitle, setEdittedTitle] = useState(props.vacation.destination)
+    const [edittedTitle, setEdittedTitle] = useState(destination)
     const [edit, setEdit] = useState(false);
     const [isVacationFollowed, setIsVacationFollowed] = useState(false)
 
     const handleFavorite = async () => {
         await Axios.post(`${url}/followers/follow`, {
-            vacationId: vacation.id,
+            vacationId: id,
             followerId: userData.id,
         })
-        dispatch(followVacation({ vacationIdToFollow: vacation.id, isFollowed: isVacationFollowed }))
+        dispatch(followVacation({ vacationIdToFollow: id, isFollowed: isVacationFollowed }))
         setIsVacationFollowed(!isVacationFollowed)
     }
 
     useEffect(() => {
-        const isVacationFollowed = following.some(item => item === vacation.id)
+        const isVacationFollowed = following.some(item => item === id)
         setIsVacationFollowed(isVacationFollowed)
-    }, [following, vacation])
+    }, [following, id])
 
     useEffect(() => {
         setEdittedTitle()
@@ -46,9 +47,14 @@ const Vacation = (props) => {
     return (
         <div className={`${classes.root} animate__animated animate__zoomIn animate__faster`}>
             {!edit ? <div className={classes.vacation}>
-                <img src={vacation.image} className={classes.media} alt="" />
+                <img src={image} className={classes.media} alt="" />
                 <CardContent className={classes.cardContent}>
                     <div className={classes.vacationIcon}>
+                        <Tooltip title={'View on map'}>
+                            <IconButton className={classes.mapIcon} onClick={() => handleMapData(vacation)}>
+                                <Map color={'secondary'} />
+                            </IconButton>
+                        </Tooltip>
                         {userData.role === 1 ?
                             <Tooltip title={'Edit'}>
                                 <IconButton onClick={() => setEdit(!edit)}>
@@ -56,7 +62,7 @@ const Vacation = (props) => {
                                 </IconButton>
                             </Tooltip> :
                             <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-                                <div className={classes.followers}>{vacation.followers}</div>
+                                <div className={classes.followers}>{followers}</div>
                                 <Tooltip title={isVacationFollowed ? 'Unlike' : 'Like'}>
                                     <Checkbox
                                         onChange={handleFavorite}
@@ -70,14 +76,14 @@ const Vacation = (props) => {
                     </div>
                     <div className={classes.titleContainer}>
                         <div>
-                            <h2 dangerouslySetInnerHTML={edittedTitle ? createMarkup(edittedTitle) : createMarkup(vacation.destination)}></h2>
-                            <h5>{vacation.dates}</h5>
+                            <h2 dangerouslySetInnerHTML={edittedTitle ? createMarkup(edittedTitle) : createMarkup(destination)}></h2>
+                            <h5>{dates}</h5>
                         </div>
                     </div>
                     <div className={classes.divider}><Divider /></div>
-                    <p>{vacation.description}</p>
+                    <p>{description}</p>
                     <div className={classes.footer}>
-                        <h4>${vacation.price.toLocaleString()}</h4>
+                        <h4>${price.toLocaleString()}</h4>
                     </div>
                 </CardContent></div> :
                 <EditVacation className={classes.editVacation} vacation={vacation} setEdit={setEdit} setEdittedTitle={setEdittedTitle} />
@@ -88,16 +94,20 @@ const Vacation = (props) => {
 
 const useStyles = makeStyles(theme => ({
     root: {
-        // animationDuration: '.4s',
         '& > *': {
             width: '100%',
             display: 'flex',
         },
     },
+    mapIcon: {
+        [theme.breakpoints.down('md')]: {
+            display: 'none'
+        }
+    },
     media: {
-        height: '200px',
-        minWidth: '300px',
-        width: '300px',
+        height: 200,
+        minWidth: 300,
+        width: 300,
         borderRadius: 10,
         border: '1px solid lightgrey',
         [theme.breakpoints.down('xs')]: {
