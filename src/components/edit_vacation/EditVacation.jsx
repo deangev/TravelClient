@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import Axios from 'axios'
+import { toast } from 'react-toastify';
 import socketIOClient from "socket.io-client";
 import { CardContent, CircularProgress, FormControl, IconButton, Input, InputAdornment, InputLabel, TextField, ClickAwayListener } from '@material-ui/core';
 import { Delete, Undo, Save } from '@material-ui/icons';
@@ -9,14 +10,13 @@ import { editVacation, removeVacation } from '../../redux/actions';
 import DatePicker from '../date_picker/DatePicker'
 import EditImage from './EditImage';
 import Tooltip from '../Tooltip';
-import { toast } from 'react-toastify';
+import url from '../../service';
 
 toast.configure()
 const EditVacation = (props) => {
     const classes = useStyles();
     const { setEdit, vacation } = props
     const dispatch = useDispatch()
-    const url = useSelector(state => state.url)
     const socket = socketIOClient(url)
     const vacations = useSelector(state => state.vacations)
 

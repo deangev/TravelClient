@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Axios from 'axios';
 import socketIOClient from "socket.io-client";
+import { toast } from 'react-toastify';
 import { CardContent, CircularProgress, FormControl, Input, InputAdornment, InputLabel, makeStyles, TextField, ClickAwayListener, IconButton } from '@material-ui/core';
 import { Undo, Save } from '@material-ui/icons';
 import DatePicker from '../date_picker/DatePicker';
 import { createVacation } from '../../redux/actions'
 import Tooltip from '../Tooltip';
 import ImageUpload from './ImageUpload';
-import { toast } from 'react-toastify';
+import url from '../../service'
 
 toast.configure()
 const AddVacation = ({ setAddVacation }) => {
     const classes = useStyles();
     const dispatch = useDispatch()
-    const url = useSelector(state => state.url)
     const [error, setError] = useState('');
     const [file, setFile] = useState()
     const [description, setDescription] = useState()

@@ -24,7 +24,7 @@ export default function MaterialUIPickers({ dates, setDates }) {
     );
 }
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     datePicker: {
         marginBottom: '5px !important',
         width: '100%',

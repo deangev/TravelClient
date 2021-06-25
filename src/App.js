@@ -6,11 +6,11 @@ import { initialSetFollows, initialUpdateVacations, updateUserData } from './red
 import Auth from './pages/authentication/Auth'
 import Home from './pages/home/Home';
 import Stats from './pages/stats/Stats';
+import url from './service'
 
 function App() {
   const dispatch = useDispatch()
   const history = useHistory()
-  const url = useSelector(state => state.url)
   const userData = useSelector(state => state.userData)
 
   useEffect(() => {
@@ -43,7 +43,7 @@ function App() {
       }
     }
     getInitialData()
-  }, [url, history, dispatch])
+  }, [history, dispatch])
 
   useEffect(() => {
     const getInitialData = async () => {
@@ -58,7 +58,7 @@ function App() {
       })
     }
     getInitialData()
-  }, [url, userData, dispatch])
+  }, [userData, dispatch])
 
   return (
     <BrowserRouter>

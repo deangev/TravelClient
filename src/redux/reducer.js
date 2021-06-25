@@ -1,5 +1,4 @@
 const initialState = {
-    url: 'https://vacation-dean.herokuapp.com',
     userData: {
         token: undefined,
         firstName: undefined,

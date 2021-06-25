@@ -5,11 +5,11 @@ import Axios from 'axios';
 import { Button, ClickAwayListener } from '@material-ui/core'
 import { updateUserData } from '../../redux/actions'
 import Tooltip from '../../components/Tooltip';
+import url from '../../service';
 import './login.css';
 
 const Auth = () => {
     const userData = useSelector(state => state.userData)
-    const url = useSelector(state => state.url)
     const history = useHistory();
     const containerRef = useRef()
     const [loginData, setLoginData] = useState({ username: '', password: '' })

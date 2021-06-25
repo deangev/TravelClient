@@ -42,8 +42,7 @@ export default function ImageUpload(props) {
                     <div style={{ width: '100%' }}>
                         <p style={{ textAlign: 'center' }}>Drag & drop an image here, or click to select one.</p>
                     </div>
-                )
-                }
+                )}
             </div>
         </div>
     );

@@ -13,13 +13,13 @@ import AddVacation from '../../components/add_vacation/AddVacation';
 import Map from '../../components/map/Map';
 import Filter from '../../components/filter/Filter';
 import Tooltip from '../../components/Tooltip';
+import url from '../../service';
 
 const SKELETON_WIDTH_ARRAY = [60, 100, 280, 300, 290]
 
 const Home = () => {
     const classes = useStyles();
     const history = useHistory()
-    const url = useSelector(state => state.url)
     const socket = socketIOClient(url)
     const userData = useSelector(state => state.userData)
     const filteredVacations = useSelector(state => state.filteredVacations)

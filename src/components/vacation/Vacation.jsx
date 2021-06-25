@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { followVacation } from '../../redux/actions';
 import EditVacation from '../edit_vacation/EditVacation';
 import Tooltip from '../Tooltip';
+import url from '../../service';
 
 const createMarkup = html => {
     return { __html: html }
@@ -16,7 +17,6 @@ const Vacation = (props) => {
     const { vacation, handleMapData } = props
     const { image, destination, id, followers, dates, description, price } = vacation
     const classes = useStyles();
-    const url = useSelector(state => state.url)
     const userData = useSelector(state => state.userData)
     const following = useSelector(state => state.following)
     const searchString = useSelector(state => state.searchString)
@@ -45,16 +45,11 @@ const Vacation = (props) => {
     }, [searchString])
 
     return (
-        <div className={`${classes.root} animate__animated animate__zoomIn animate__faster`}>
+        <div className={`${classes.root} animate__animated animate__zoomIn`}>
             {!edit ? <div className={classes.vacation}>
                 <img src={image} className={classes.media} alt="" />
                 <CardContent className={classes.cardContent}>
                     <div className={classes.vacationIcon}>
-                        <Tooltip title={'View on map'}>
-                            <IconButton className={classes.mapIcon} onClick={() => handleMapData(vacation)}>
-                                <Map color={'secondary'} />
-                            </IconButton>
-                        </Tooltip>
                         {userData.role === 1 ?
                             <Tooltip title={'Edit'}>
                                 <IconButton onClick={() => setEdit(!edit)}>
@@ -73,6 +68,11 @@ const Vacation = (props) => {
                                 </Tooltip>
                             </div>
                         }
+                        <Tooltip title={'View on map'}>
+                            <IconButton className={classes.mapIcon} onClick={() => handleMapData(vacation)}>
+                                <Map color={'secondary'} />
+                            </IconButton>
+                        </Tooltip>
                     </div>
                     <div className={classes.titleContainer}>
                         <div>
@@ -94,6 +94,7 @@ const Vacation = (props) => {
 
 const useStyles = makeStyles(theme => ({
     root: {
+        animationDuration: '.2s',
         '& > *': {
             width: '100%',
             display: 'flex',
@@ -157,6 +158,8 @@ const useStyles = makeStyles(theme => ({
     },
     vacationIcon: {
         position: 'absolute',
+        display: 'flex',
+        alignItems: 'center',
         right: -6,
         top: 0,
         zIndex: 1,
