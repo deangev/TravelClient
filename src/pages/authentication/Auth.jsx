@@ -5,6 +5,7 @@ import Axios from 'axios';
 import { Button, ClickAwayListener } from '@material-ui/core'
 import { updateUserData } from '../../redux/actions'
 import Tooltip from '../../components/Tooltip';
+import Loader from './Loader';
 import url from '../../service';
 import './login.css';
 
@@ -72,7 +73,7 @@ const Auth = () => {
 
     return (
         <div id="auth-container" className="animate__animated animate__zoomIn animate__faster">
-            {!token &&
+            {!token ?
                 <div ref={containerRef} className="container" id="container">
                     <div className="form-container sign-up-container">
                         <div id="form">
@@ -127,7 +128,7 @@ const Auth = () => {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> : <Loader />
             }
         </div>
     )

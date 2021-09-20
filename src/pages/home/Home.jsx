@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Axios from 'axios';
 import socketIOClient from "socket.io-client";
 import { makeStyles } from '@material-ui/core/styles';
+import { CircularProgress } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { createVacation, editVacation, removeVacation } from '../../redux/actions'
@@ -17,7 +18,7 @@ import url from '../../service';
 
 const SKELETON_WIDTH_ARRAY = [60, 100, 280, 300, 290]
 
-const Home = () => {
+const Home = ({ isVacationsLoading }) => {
     const classes = useStyles();
     const history = useHistory()
     const socket = socketIOClient(url)
@@ -51,6 +52,7 @@ const Home = () => {
             map.setView([res.data.lat || 51.505, res.data.lon || -0.09], 9)
         })
     }
+
     return (
         <div style={{ width: '100vw', height: '100vh' }}>
             <Navbar />
@@ -85,9 +87,12 @@ const Home = () => {
                             ))}
                         {filteredVacations.map(vacation => (
                             <div key={vacation.id} className={classes.vacationWrapper} style={{ borderBottom: '1px solid lightgrey' }}>
-                                <Vacation vacation={vacation} handleMapData={handleMapData}/>
+                                <Vacation vacation={vacation} handleMapData={handleMapData} />
                             </div>
                         ))}
+                        {isVacationsLoading && <div className={classes.circularProgress}>
+                            <CircularProgress color={'secondary'} />
+                        </div>}
                     </div>
                 </div>
             </div>
@@ -103,6 +108,16 @@ const useStyles = makeStyles(theme => ({
         position: 'relative',
         [theme.breakpoints.down('xs')]: {
             width: '89vw !important'
+        }
+    },
+    circularProgress: {
+        margin: '50px 0',
+        height: '20vh',
+        display: 'flex',
+        alignItems: 'flex-end',
+        justifyContent: 'center',
+        [theme.breakpoints.down('md')]: {
+            width: '100vw',
         }
     },
     lastSkeleton: {
@@ -142,8 +157,8 @@ const useStyles = makeStyles(theme => ({
     },
     allVacationsWrapper: {
         minWidth: 730,
-        width: '45%',
         height: '100%',
+        position: 'relative',
     },
     mapContainer: {
         minWidth: '45vw',
